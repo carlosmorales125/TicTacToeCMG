@@ -330,20 +330,28 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 
 	//handles whether a cell has been clicked
 	$scope.cellClick = function (cellNumber) {
+	
 		var cell = $scope['cell' + cellNumber];
-		cell.setSelected();
-		cell.setPlayer($scope.currentPlayer);
-		if (checkWinner(CurrentBoard)){
-			$scope.gameOver = true;
-			$scope.gameResult = $scope.currentPlayer + " has won the game.";
-			$("#myModal").modal();
+		
+		if(!cell.checkSelected()) {
+			$scope.aiMessage = "";
+			cell.setSelected();
+			cell.setPlayer($scope.currentPlayer);
+			if (checkWinner(CurrentBoard)){
+				$scope.gameOver = true;
+				$scope.gameResult = $scope.currentPlayer + " has won the game.";
+				$("#myModal").modal();
+			}
+			if (checkDraw(CurrentBoard)){
+				$scope.gameOver = true;
+				$scope.gameResult = "The game ended in a draw.";
+				$("#myModal").modal();
+			}
+			switchPlayer(cell);
+
+		} else {
+			$scope.aiMessage = "That cell is selected, please choose another.";
 		}
-		if (checkDraw(CurrentBoard)){
-			$scope.gameOver = true;
-			$scope.gameResult = "The game ended in a draw.";
-			$("#myModal").modal();
-		}
-		switchPlayer(cell);
 	};
 
 	$scope.resetGame = function (){
