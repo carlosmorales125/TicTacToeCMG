@@ -6,16 +6,16 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 			case "human":
 				$scope.title = "Human Vs. Human";
 				$scope.directions = "When choosing who goes first, you can use age, a coin toss, or just about anything.";
-				break
+				break;
 
 			case "computer":
 				$scope.title = "Human Vs. Computer";
-				$scope.directions = "When playing against the computer, the human goes first. It's the only way to (mildly) entertain the computer."
-				break
+				$scope.directions = "When playing against the computer, the human goes first. It's the only way to (mildly) entertain the computer.";
+				break;
 			default:
 				alert('That is not a valid URL.');
 				$location.path('/');
-				break
+				break;
 	}
 	
 	//Tic Tac Toe Cell Class
@@ -28,23 +28,23 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 
 	  this.setSelected = function setSelected() {
 	    this.selected = true;
-	  }
+	  };
 
 	  this.deselected = function deselected() {
 	    this.selected = false;
-	  }
+	  };
 
 	  this.checkSelected = function checkSelected() {
 	    return this.selected;
-	  }
+	  };
 
 	  this.setPlayer = function setPlayer(currentPlayer) {
 	    this.player = currentPlayer;
-	  }
+	  };
 
 	  this.getPlayer = function getPlayer() {
 	    return this.player;
-	  }
+	  };
 
 	}
 
@@ -55,7 +55,7 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 			player2 = functionCell2.getPlayer(),
 			player3 = functionCell3.getPlayer();
 
-		if (player1 == player2 && player2 == player3 && player1 != null && player2 != null && player3 != null){
+		if (player1 === player2 && player2 === player3 && player1 !== null && player2 !== null && player3 !== null){
 			return true;
 		} else {
 			return false;
@@ -173,7 +173,7 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 	
 	function makeMove(move, player, board){
 		var newBoard = cloneBoard(board);
-		if(newBoard[move].checkSelected() == false){
+		if(newBoard[move].checkSelected() === false){
 			newBoard[move].setSelected();
 			newBoard[move].setPlayer(player);
 			return newBoard;
@@ -386,26 +386,24 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 	    cell6 = new cell(false, 6, null),
 	    cell7 = new cell(false, 7, null),
 	    cell8 = new cell(false, 8, null),
-	    cell9 = new cell(false, 9, null);
-	    CurrentBoard = [cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9];
-	    $scope.cell1 = cell1;
-		$scope.cell2 = cell2;
-		$scope.cell3 = cell3;
-		$scope.cell4 = cell4;
-		$scope.cell5 = cell5;
-		$scope.cell6 = cell6;
-		$scope.cell7 = cell7;
-		$scope.cell8 = cell8;
-		$scope.cell9 = cell9;
-		$scope.currentPlayer = 'X'; 
-		$scope.max = "O";
-		$scope.min = "X";
-		$scope.maxIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>';
-		$scope.minIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>';
-		$scope.gameOver = false;
+	    cell9 = new cell(false, 9, null),
+	    CurrentBoard = [cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9],
+	    $scope.cell1 = cell1,
+		$scope.cell2 = cell2,
+		$scope.cell3 = cell3,
+		$scope.cell4 = cell4,
+		$scope.cell5 = cell5,
+		$scope.cell6 = cell6,
+		$scope.cell7 = cell7,
+		$scope.cell8 = cell8,
+		$scope.cell9 = cell9,
+		$scope.currentPlayer = 'X', 
+		$scope.max = "O",
+		$scope.min = "X",
+		$scope.maxIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>',
+		$scope.minIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>',
+		$scope.gameOver = false,
 		$scope.changePlayerButton = false;
-	}
+	};
 
-
-	
 }
