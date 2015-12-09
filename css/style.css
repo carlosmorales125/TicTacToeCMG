@@ -13,6 +13,10 @@ html,body{
 	padding: 17% 12% 6% 6%;
 }
 
+.removeMargin{
+	margin: 0px!important;
+}
+
 /*
 	***Tic Tac Toe Styling Begin***
 */

@@ -5,12 +5,12 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 		switch($routeParams.who){
 			case "human":
 				$scope.title = "Human Vs. Human";
-				$scope.directions = "When playing agaisnt another person you can use oldest person goes first, a coin toss, or just about anthing to determine who goes first. Either way, X goes first.";
+				$scope.directions = "When playing agaisnt another person you can use oldest person goes first, a coin toss, or just about anthing to determine who goes first.";
 				break
 
 			case "computer":
 				$scope.title = "Human Vs. Computer";
-				$scope.directions = "When playing agaisnt the computer, the human goes first. It's the only way to (mildly) entertain the computer. X goes first.'"
+				$scope.directions = "When playing agaisnt the computer, the human goes first. It's the only way to (mildly) entertain the computer."
 				break
 			default:
 				alert('That is not a valid URL.');
@@ -152,6 +152,22 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 			return true;
 		} 
 	}
+
+	$scope.changePlayer = function () {
+		if($scope.currentPlayer == "X"){
+			$scope.currentPlayer = "O";
+			$scope.max = "X";
+			$scope.min = "O";
+			$scope.maxIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>';
+			$scope.minIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>';
+		} else {
+			$scope.currentPlayer = "X";
+			$scope.max = "O";
+			$scope.min = "X";
+			$scope.maxIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>';
+			$scope.minIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>';
+		}
+	};
 	
 	function makeMove(move, player, board){
 		var newBoard = cloneBoard(board);
@@ -181,7 +197,7 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 		//Where minValueForX trades it with maxValueforO until a good score 
 		//is reached.
 		for (var i = 0; i < board.length; i++) {
-			var newBoard = makeMove(i, 'O', board);
+			var newBoard = makeMove(i, $scope.max, board); //max 
 			if (newBoard) {
 				var predictedMoveValue = minValueForX(newBoard);
 				if(predictedMoveValue > bestMoveValue){
@@ -197,7 +213,7 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 		
 		if (checkWinner(board)){
 			
-			if ($scope.setWinner == "O"){
+			if ($scope.setWinner == $scope.max){ //max
 				return 1;
 			} else {
 				return -1;
@@ -212,7 +228,7 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 			var bestMoveValue = 100;
 			var move = 0;
 			for (var i = 0; i < board.length; i++) {
-				var newBoard = makeMove(i, 'X', board);
+				var newBoard = makeMove(i, $scope.min, board); //min
 				if (newBoard) {
 					var predictedMoveValue = maxValueForO(newBoard);
 					if (predictedMoveValue < bestMoveValue) {
@@ -230,7 +246,7 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 
 		if (checkWinner(board)){
 			
-			if ($scope.setWinner == "O"){
+			if ($scope.setWinner == $scope.max){ //max
 				return 1;
 			} else {
 				return -1;
@@ -245,7 +261,7 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 			var bestMoveValue = -100;
 			var move = 0;
 			for (var i = 0; i < board.length; i++) {
-				var newBoard = makeMove(i, 'O', board);
+				var newBoard = makeMove(i, $scope.max, board); //max
 				if (newBoard) {
 					var predictedMoveValue = minValueForX(newBoard);
 					if (predictedMoveValue > bestMoveValue) {
@@ -262,10 +278,10 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 	function ticTacToeAi(){	
 	
 		var moveID = findMove(CurrentBoard);
-		$scope.currentPlayer = 'X';
+		$scope.currentPlayer = $scope.min; //min
 		CurrentBoard[moveID].setSelected();
-		CurrentBoard[moveID].setPlayer('O');
-		CurrentBoard[moveID].cellIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>';
+		CurrentBoard[moveID].setPlayer($scope.max); //max
+		CurrentBoard[moveID].cellIcon = $scope.maxIcon; //maxIcon
 		$scope.aiMessage = '';
 		if(checkWinner(CurrentBoard)){
 			$scope.gameOver = true;
@@ -283,9 +299,9 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 	//This function handles switching players for both human and computer modes.
 	function switchPlayer(functionCell){
 		
-		if($routeParams.who == 'computer' && $scope.currentPlayer == 'X' && $scope.gameOver === false){
-			functionCell.cellIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>';
-			$scope.currentPlayer = 'O';
+		if($routeParams.who == 'computer' && $scope.currentPlayer == $scope.min && $scope.gameOver === false){ //min
+			functionCell.cellIcon = $scope.minIcon; //minIcon
+			$scope.currentPlayer = $scope.max; //max
 			$scope.aiMessage = 'The computer is thinking: ' + '<i class="fa fa-circle-o-notch fa-spin"></i>';
 			//placing AI logic here. 
 			$timeout(function () {
@@ -293,11 +309,11 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 			}, 1000);
 		} else {
 			
-			if($scope.currentPlayer == 'X' && $scope.gameOver === false){
-				$scope.currentPlayer = 'O';
+			if($scope.currentPlayer == 'X' && $scope.gameOver === false){ 
+				$scope.currentPlayer = 'O'; 
 				functionCell.cellIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>';
 			} else {
-				$scope.currentPlayer = 'X';
+				$scope.currentPlayer = 'X'; 
 				functionCell.cellIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>';
 			}
 		}
@@ -306,6 +322,10 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 
 	//current variable setup
 	$scope.currentPlayer = 'X';
+	$scope.max = "O";
+	$scope.min = "X";
+	$scope.maxIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>';
+	$scope.minIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>';
 	$scope.gameOver = false;
 	var cell1 = new cell(false, 1, null),
 	    cell2 = new cell(false, 2, null),
@@ -330,10 +350,11 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 
 	//handles whether a cell has been clicked
 	$scope.cellClick = function (cellNumber) {
-	
+		console.log($scope.currentPlayer);
 		var cell = $scope['cell' + cellNumber];
 		
 		if(!cell.checkSelected()) {
+			$scope.changePlayerButton = true;
 			$scope.aiMessage = "";
 			cell.setSelected();
 			cell.setPlayer($scope.currentPlayer);
@@ -375,7 +396,12 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 		$scope.cell8 = cell8;
 		$scope.cell9 = cell9;
 		$scope.currentPlayer = 'X'; 
+		$scope.max = "O";
+		$scope.min = "X";
+		$scope.maxIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>';
+		$scope.minIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>';
 		$scope.gameOver = false;
+		$scope.changePlayerButton = false;
 	}
 
 

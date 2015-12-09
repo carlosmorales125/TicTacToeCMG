@@ -46,10 +46,12 @@
 	    					</div>
 	    					<div class="editContent">
 	    						<p class="lead">{{directions}}</p>
+	    						
 	    					</div>
 	    					<div class="editContent">
-	    						<h1>Current Player: {{currentPlayer}}</h1>
+	    						<h1>Current Player: {{currentPlayer}} </h1>
 	    						<p ng-bind-html="aiMessage"></p>
+	    						<button ng-hide="changePlayerButton" ng-click="changePlayer()" class="btn btn-primary btn-embossed">Change Player</button>
 	    					</div>
 	    				</div>
 	    				<div class="col-lg-5 col-md-6 col-sm-12 pull-left pull-left">
