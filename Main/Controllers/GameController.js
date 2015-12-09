@@ -5,12 +5,12 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 		switch($routeParams.who){
 			case "human":
 				$scope.title = "Human Vs. Human";
-				$scope.directions = "When playing agaisnt another person you can use oldest person goes first, a coin toss, or just about anthing to determine who goes first.";
+				$scope.directions = "When choosing who goes first, you can use age, a coin toss, or just about anything.";
 				break
 
 			case "computer":
 				$scope.title = "Human Vs. Computer";
-				$scope.directions = "When playing agaisnt the computer, the human goes first. It's the only way to (mildly) entertain the computer."
+				$scope.directions = "When playing against the computer, the human goes first. It's the only way to (mildly) entertain the computer."
 				break
 			default:
 				alert('That is not a valid URL.');
