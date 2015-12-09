@@ -154,18 +154,20 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 	}
 
 	$scope.changePlayer = function () {
-		if($scope.currentPlayer == "X"){
-			$scope.currentPlayer = "O";
-			$scope.max = "X";
-			$scope.min = "O";
-			$scope.maxIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>';
-			$scope.minIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>';
-		} else {
-			$scope.currentPlayer = "X";
-			$scope.max = "O";
-			$scope.min = "X";
-			$scope.maxIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>';
-			$scope.minIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>';
+		if($scope.gameOver === false){
+			if($scope.currentPlayer == "X"){
+				$scope.currentPlayer = "O";
+				$scope.max = "X";
+				$scope.min = "O";
+				$scope.maxIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>';
+				$scope.minIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>';
+			} else {
+				$scope.currentPlayer = "X";
+				$scope.max = "O";
+				$scope.min = "X";
+				$scope.maxIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>';
+				$scope.minIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>';
+			}
 		}
 	};
 	
@@ -298,23 +300,24 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 
 	//This function handles switching players for both human and computer modes.
 	function switchPlayer(functionCell){
-		
-		if($routeParams.who == 'computer' && $scope.currentPlayer == $scope.min && $scope.gameOver === false){ //min
-			functionCell.cellIcon = $scope.minIcon; //minIcon
-			$scope.currentPlayer = $scope.max; //max
-			$scope.aiMessage = 'The computer is thinking: ' + '<i class="fa fa-circle-o-notch fa-spin"></i>';
-			//placing AI logic here. 
-			$timeout(function () {
-				ticTacToeAi();
-			}, 1000);
-		} else {
-			
-			if($scope.currentPlayer == 'X' && $scope.gameOver === false){ 
-				$scope.currentPlayer = 'O'; 
-				functionCell.cellIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>';
+		if($scope.gameOver === false) {
+			if($routeParams.who == 'computer' && $scope.currentPlayer == $scope.min && $scope.gameOver === false){ //min
+				functionCell.cellIcon = $scope.minIcon; //minIcon
+				$scope.currentPlayer = $scope.max; //max
+				$scope.aiMessage = 'The computer is thinking: ' + '<i class="fa fa-circle-o-notch fa-spin"></i>';
+				//placing AI logic here. 
+				$timeout(function () {
+					ticTacToeAi();
+				}, 1000);
 			} else {
-				$scope.currentPlayer = 'X'; 
-				functionCell.cellIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>';
+				
+				if($scope.currentPlayer == 'X' && $scope.gameOver === false){ 
+					$scope.currentPlayer = 'O'; 
+					functionCell.cellIcon = '<i class="fa fa-times  fa-4x cellIcon"></i>';
+				} else {
+					$scope.currentPlayer = 'X'; 
+					functionCell.cellIcon = '<i class="fa fa-circle-o   fa-4x cellIcon"></i>';
+				}
 			}
 		}
 
@@ -350,7 +353,6 @@ ticTacToe.controller('GameController', ['$scope', '$routeParams', '$location', '
 
 	//handles whether a cell has been clicked
 	$scope.cellClick = function (cellNumber) {
-		console.log($scope.currentPlayer);
 		var cell = $scope['cell' + cellNumber];
 		
 		if(!cell.checkSelected()) {
